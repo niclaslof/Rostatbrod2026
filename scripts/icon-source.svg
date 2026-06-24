@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Twilight background: night-mid -> night-deep, top-left to bottom-right -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#222a52"/>
+      <stop offset="0.55" stop-color="#121838"/>
+      <stop offset="1" stop-color="#080b18"/>
+    </linearGradient>
+    <!-- Ambient amber glow behind the pin -->
+    <radialGradient id="glow" cx="0.5" cy="0.46" r="0.55">
+      <stop offset="0" stop-color="#e7b450" stop-opacity="0.42"/>
+      <stop offset="0.5" stop-color="#e7b450" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#e7b450" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Amber pin gradient -->
+    <linearGradient id="amber" x1="0.2" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#f9dd93"/>
+      <stop offset="0.5" stop-color="#e7b450"/>
+      <stop offset="1" stop-color="#b9821f"/>
+    </linearGradient>
+    <!-- Soft drop shadow under the pin -->
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Full-bleed background (iOS masks the corners itself) -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#glow)"/>
+
+  <!-- Tiny stars / night sky, kept within the maskable safe zone -->
+  <g fill="#f6d27d">
+    <circle cx="150" cy="150" r="4" opacity="0.85"/>
+    <circle cx="356" cy="132" r="5" opacity="0.9"/>
+    <circle cx="372" cy="210" r="3" opacity="0.6"/>
+    <circle cx="138" cy="232" r="3" opacity="0.55"/>
+    <circle cx="256" cy="104" r="3.5" opacity="0.7"/>
+  </g>
+
+  <!-- Location pin: large, centred, fills the safe zone -->
+  <g filter="url(#soft)">
+    <path d="M256 120
+             c-62 0-106 44-106 106
+             0 78 106 196 106 196
+             s106-118 106-196
+             c0-62-44-106-106-106 z"
+          fill="url(#amber)"/>
+    <circle cx="256" cy="222" r="44" fill="#0e1326"/>
+  </g>
+</svg>

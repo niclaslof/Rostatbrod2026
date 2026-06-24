@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+/* Class-based dark mode (toggle adds `.dark` on <html>). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Walli-style warm editorial theme. Semantic tokens map to runtime CSS vars
+  (in :root / .dark) so every `bg-paper` / `text-ink` / `border-line` utility
+  flips automatically between light and dark — no `dark:` prefixes needed.
+*/
+@theme inline {
+  /* ── Surfaces & text (flip in .dark) ── */
+  --color-paper: var(--paper);       /* page background */
+  --color-card: var(--card);         /* cards, list rows */
+  --color-panel: var(--panel);       /* filter bars, subtle panels */
+  --color-tag: var(--tag);           /* chips, hover row */
+  --color-ink: var(--ink);           /* primary text */
+  --color-warm: var(--warm);         /* muted / meta text */
+  --color-faint: var(--faint);       /* faint text, empty stars */
+  --color-line: var(--line);         /* row dividers */
+  --color-line-soft: var(--line-soft); /* card borders */
+  --color-paperink: var(--paperink); /* text on ink surfaces */
+
+  /* ── Accents (read well on both themes) ── */
+  --color-amber: #b45309;            /* amber-700 — primary accent */
+  --color-amber-bright: #f59e0b;     /* amber-500 — stars / highlight */
+  --color-amber-deep: #92400e;
+  --color-clay: #c96442;             /* terracotta */
+  --color-wine: #9e4444;             /* deep red */
+  --color-price: #15803d;            /* green-700 — price tier */
+  --color-teal: #0d9488;
+
+  /* ── Fonts ── */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* ── Legacy aliases (old dark-twilight names → new tokens) so any
+        not-yet-reskinned component still renders sanely on the new theme. ── */
+  --color-night: var(--paper);
+  --color-night-deep: var(--paper);
+  --color-night-mid: var(--card);
+  --color-night-light: var(--line-soft);
+  --color-foam: var(--ink);
+  --color-cream: var(--warm);
+  --color-coral: #b91c1c;
+  --color-violet: #7c3aed;
+}
+
+:root {
+  --paper: #faf8f5;
+  --card: #ffffff;
+  --panel: #f4f1ea;
+  --tag: #f3efe9;
+  --ink: #1c1917;
+  --warm: #6b665e;
+  --faint: #a8a29e;
+  --line: #f0ece4;
+  --line-soft: #e7e2d8;
+  --paperink: #faf8f5;
+}
+
+.dark {
+  --paper: #15120f;
+  --card: #1d1a16;
+  --panel: #221e19;
+  --tag: #2a251f;
+  --ink: #f4f1ea;
+  --warm: #a8a29e;
+  --faint: #78716c;
+  --line: #2a241f;
+  --line-soft: #332c25;
+  --paperink: #f4f1ea;
+}
+
+html {
+  scroll-behavior: smooth;
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  background: var(--paper);
+  scroll-padding-top: 5rem;
+  color-scheme: light;
+}
+html.dark { color-scheme: dark; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Subtle warm ambience — single fixed layer, no scroll repaint. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 36% at 50% 0%, rgba(180, 83, 9, 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(201, 100, 66, 0.05) 0%, transparent 70%);
+}
+.dark body::before {
+  background:
+    radial-gradient(ellipse 80% 36% at 50% 0%, rgba(245, 158, 11, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(201, 100, 66, 0.08) 0%, transparent 70%);
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(180, 83, 9, 0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(180, 83, 9, 0.5); }
+
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Reusable surfaces ──────────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 1rem;
+}
+.card-warm {
+  background: var(--panel);
+  border: 1px solid var(--line-soft);
+  border-radius: 1rem;
+}
+
+/* Micro label — uppercase tracked caption in warm gray. */
+.micro {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--warm);
+}
+
+/* Amber serif heading shimmer (works on light + dark). */
+.amber-text {
+  background: linear-gradient(135deg, var(--color-amber) 0%, var(--color-clay) 55%, var(--color-amber-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% 200%;
+}
+.dark .amber-text {
+  background: linear-gradient(135deg, var(--color-amber-bright) 0%, var(--color-amber) 50%, var(--color-amber-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fancy-rule {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-amber) 20%, var(--color-amber) 80%, transparent);
+  opacity: 0.5;
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.shimmer {
+  background: linear-gradient(90deg,
+    rgba(180, 83, 9, 0) 0%,
+    rgba(245, 158, 11, 0.35) 50%,
+    rgba(180, 83, 9, 0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.float { animation: float 6s ease-in-out infinite; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { animation: rise 0.7s ease-out both; }
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(180, 83, 9, 0.5); }
+  100% { box-shadow: 0 0 0 18px rgba(180, 83, 9, 0); }
+}
+.pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+
+/* Grow for balance / progress bars. */
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.grow-x { transform-origin: left; animation: grow-x 0.5s ease-out both; }
+
+/* Google Maps InfoWindow — match the theme. */
+.gm-style .gm-style-iw-c {
+  background: var(--card) !important;
+  border: 1px solid var(--line-soft) !important;
+  border-radius: 0.9rem !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18) !important;
+  padding: 0 !important;
+}
+.gm-style .gm-style-iw-d { overflow: hidden !important; }
+.gm-style .gm-style-iw-tc::after { background: var(--card) !important; }
+.gm-style .gm-style-iw-c button[aria-label="Close"] span,
+.gm-style .gm-ui-hover-effect span { background-color: var(--ink) !important; }
